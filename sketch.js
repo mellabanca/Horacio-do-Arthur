@@ -2,11 +2,13 @@ var horacio, horacioImagem;
 var osmusquitotapicando;
 var verona;
 var backiardigans;
-
+var parker;
+var venom;
 
 function preload(){
   horacioImagem = loadAnimation("trex1.png","trex3.png","trex4.png");
   verona = loadImage("ground2.png");
+  venom=loadImage("cloud.png");
 }
 
 function setup(){
@@ -25,7 +27,7 @@ createCanvas(600,200);
 }
 
 function draw(){
-background("lightgrey");
+background("#282828");
 //console.log(horacio.y);
   osmusquitotapicando.velocityX = -2;
 if(osmusquitotapicando.x<0){
@@ -43,5 +45,12 @@ drawSprites();
 }
 
 function gerador(){
-
-}
+if(frameCount%60===0){
+  parker = createSprite(600,100,40,10);
+  parker.addImage(venom);
+  parker.y=Math.round(random(5,120));
+  parker.velocityX = -3;
+  parker.depth = horacio.depth;
+  horacio.depth+=1;
+  parker.lifetime = 300;
+}}
