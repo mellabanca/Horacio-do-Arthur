@@ -4,11 +4,29 @@ var verona;
 var backiardigans;
 var parker;
 var venom;
+var stark;
+var roger;
+var baner;
+var lang;
+var fury;
+var roads;
+var rocket;
+var vingadores;
+var sextetosinistro;
+var avantevingadores = 1;
+var eusouinevitavel = 0;
+var estado = avantevingadores;
 
 function preload(){
   horacioImagem = loadAnimation("trex1.png","trex3.png","trex4.png");
   verona = loadImage("ground2.png");
   venom=loadImage("cloud.png");
+  stark=loadImage("obstacle1.png");
+  roger=loadImage("obstacle2.png");
+  baner=loadImage("obstacle3.png");
+  lang=loadImage("obstacle4.png");
+  fury=loadImage("obstacle5.png");
+  roads=loadImage("obstacle6.png");
 }
 
 function setup(){
@@ -22,14 +40,31 @@ createCanvas(600,200);
   backiardigans = createSprite(200,190,400,10);
   backiardigans.visible = false;
   borda = createEdgeSprites();
+  rocket=0;
   //var numero = Math.round(random(1,100));
   //console.log(numero);
+  vingadores = new Group();
+  sextetosinistro = new Group();
 }
 
 function draw(){
-background("#282828");
-//console.log(horacio.y);
+
+  background("#282828");
+  //console.log(horacio.y);
+
+if(estado === avantevingadores){
   osmusquitotapicando.velocityX = -2;
+
+
+
+} else if(estado === eusouinevitavel){
+  osmusquitotapicando.velocityX = 0;
+
+
+}
+
+
+  
 if(osmusquitotapicando.x<0){
   osmusquitotapicando.x = width/2;
 }
@@ -41,7 +76,10 @@ if(keyDown("space")&&horacio.y>=150){
   horacio.velocityY = horacio.velocityY + 1;
   horacio.collide(backiardigans);
   gerador();
+  strange();
 drawSprites();
+text("pontos da tua vida="+rocket,450,50);
+rocket+=Math.round(frameCount/60);
 }
 
 function gerador(){
@@ -53,4 +91,32 @@ if(frameCount%60===0){
   parker.depth = horacio.depth;
   horacio.depth+=1;
   parker.lifetime = 300;
+  vingadores.add(parker);
 }}
+function strange(){
+if(frameCount%60===0){
+  var doctor=createSprite(600,165,10,40);
+  doctor.velocityX=-6;
+  var thanos=Math.round(random(1,6));
+  switch (thanos) {
+    case 1:doctor.addImage(stark);
+      break;
+  case 2:doctor.addImage(roger);
+  break;
+  case 3:doctor.addImage(baner);
+  break;
+  case 4:doctor.addImage(lang);
+  break;
+  case 5:doctor.addImage(fury);
+  break;
+  case 6:doctor.addImage(roads);
+  break;
+    default:
+      break;
+  }
+  doctor.scale=0.5;
+  doctor.lifetime=300;
+  sextetosinistro.add(doctor);
+}
+}
+
