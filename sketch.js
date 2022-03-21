@@ -45,6 +45,8 @@ createCanvas(600,200);
   //console.log(numero);
   vingadores = new Group();
   sextetosinistro = new Group();
+  horacio.debug = false;
+  horacio.setCollider("circle",0,0,35);
 }
 
 function draw(){
@@ -54,32 +56,30 @@ function draw(){
 
 if(estado === avantevingadores){
   osmusquitotapicando.velocityX = -2;
-
-
+  if(osmusquitotapicando.x<0){
+    osmusquitotapicando.x = width/2;
+  }
+  if(keyDown("space")&&horacio.y>=150){
+    horacio.velocityY = -12;
+  }
+  horacio.velocityY = horacio.velocityY + 1;
+  gerador();
+  strange();
+  rocket+=Math.round(frameCount/60);
+if(sextetosinistro.isTouching(horacio)){
+  estado=eusouinevitavel;
+}
 
 } else if(estado === eusouinevitavel){
   osmusquitotapicando.velocityX = 0;
-
-
+  vingadores.setVelocityXEach(0);
+  sextetosinistro.setVelocityXEach(0);
 }
-
-
-  
-if(osmusquitotapicando.x<0){
-  osmusquitotapicando.x = width/2;
-}
-
-if(keyDown("space")&&horacio.y>=150){
-  horacio.velocityY = -12;
-}
-
-  horacio.velocityY = horacio.velocityY + 1;
   horacio.collide(backiardigans);
-  gerador();
-  strange();
+  
 drawSprites();
 text("pontos da tua vida="+rocket,450,50);
-rocket+=Math.round(frameCount/60);
+
 }
 
 function gerador(){
