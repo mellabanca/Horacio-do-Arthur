@@ -16,6 +16,9 @@ var sextetosinistro;
 var avantevingadores = 1;
 var eusouinevitavel = 0;
 var estado = avantevingadores;
+var batman;
+var charada,charadaimagen;
+var coringa,coringaimagen;
 
 function preload(){
   horacioImagem = loadAnimation("trex1.png","trex3.png","trex4.png");
@@ -27,6 +30,9 @@ function preload(){
   lang=loadImage("obstacle4.png");
   fury=loadImage("obstacle5.png");
   roads=loadImage("obstacle6.png");
+  batman=loadAnimation("trex_collided.png");
+  charadaimagen=loadImage("gameOver.png");
+  coringaimagen=loadImage("restart.png");
 }
 
 function setup(){
@@ -36,6 +42,7 @@ createCanvas(600,200);
   osmusquitotapicando.x = width/2;
   horacio = createSprite(50,160,20,50);
   horacio.addAnimation("correndo", horacioImagem);
+  horacio.addAnimation("bateuasbotas",batman);
   horacio.scale = 0.5;
   backiardigans = createSprite(200,190,400,10);
   backiardigans.visible = false;
@@ -47,6 +54,11 @@ createCanvas(600,200);
   sextetosinistro = new Group();
   horacio.debug = false;
   horacio.setCollider("circle",0,0,35);
+  charada=createSprite(300,100);
+  charada.addImage(charadaimagen);
+  coringa=createSprite(300,140);
+  coringa.addImage(coringaimagen);
+  coringa.scale=0.7;
 }
 
 function draw(){
@@ -55,6 +67,8 @@ function draw(){
   //console.log(horacio.y);
 
 if(estado === avantevingadores){
+  charada.visible=false;
+  coringa.visible=false;
   osmusquitotapicando.velocityX = -2;
   if(osmusquitotapicando.x<0){
     osmusquitotapicando.x = width/2;
@@ -62,6 +76,7 @@ if(estado === avantevingadores){
   if(keyDown("space")&&horacio.y>=150){
     horacio.velocityY = -12;
   }
+
   horacio.velocityY = horacio.velocityY + 1;
   gerador();
   strange();
@@ -69,11 +84,17 @@ if(estado === avantevingadores){
 if(sextetosinistro.isTouching(horacio)){
   estado=eusouinevitavel;
 }
-
+ 
 } else if(estado === eusouinevitavel){
+  charada.visible=true;
+  coringa.visible=true;
+  horacio.changeAnimation("bateuasbotas");
   osmusquitotapicando.velocityX = 0;
   vingadores.setVelocityXEach(0);
   sextetosinistro.setVelocityXEach(0);
+  vingadores.setLifetimeEach(-1);
+  sextetosinistro.setLifetimeEach(-1);
+  horacio.velocityY=0;
 }
   horacio.collide(backiardigans);
   
