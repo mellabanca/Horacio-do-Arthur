@@ -19,6 +19,10 @@ var estado = avantevingadores;
 var batman;
 var charada,charadaimagen;
 var coringa,coringaimagen;
+var mario;
+var bos;
+var luig;
+var mensagem = "Isso é uma mensagem";
 
 function preload(){
   horacioImagem = loadAnimation("trex1.png","trex3.png","trex4.png");
@@ -33,6 +37,9 @@ function preload(){
   batman=loadAnimation("trex_collided.png");
   charadaimagen=loadImage("gameOver.png");
   coringaimagen=loadImage("restart.png");
+  mario=loadSound("jump.mp3");
+  bos=loadSound("die.mp3");
+  luig=loadSound("checkPoint.mp3");
 }
 
 function setup(){
@@ -59,22 +66,25 @@ createCanvas(600,200);
   coringa=createSprite(300,140);
   coringa.addImage(coringaimagen);
   coringa.scale=0.7;
+  
 }
 
 function draw(){
 
   background("#282828");
   //console.log(horacio.y);
+  //console.log(mensagem);
 
 if(estado === avantevingadores){
   charada.visible=false;
   coringa.visible=false;
-  osmusquitotapicando.velocityX = -2;
+  osmusquitotapicando.velocityX = -(4+rocket/100);
   if(osmusquitotapicando.x<0){
     osmusquitotapicando.x = width/2;
   }
   if(keyDown("space")&&horacio.y>=150){
     horacio.velocityY = -12;
+    mario.play();
   }
 
   horacio.velocityY = horacio.velocityY + 1;
@@ -83,8 +93,15 @@ if(estado === avantevingadores){
   rocket+=Math.round(frameCount/60);
 if(sextetosinistro.isTouching(horacio)){
   estado=eusouinevitavel;
+  bos.play();
 }
- 
+if(rocket>0&&rocket%100===0){
+  luig.play();
+  luig.setVolume(0.2);
+} 
+
+
+
 } else if(estado === eusouinevitavel){
   charada.visible=true;
   coringa.visible=true;
@@ -97,10 +114,18 @@ if(sextetosinistro.isTouching(horacio)){
   horacio.velocityY=0;
 }
   horacio.collide(backiardigans);
+
+  if(mousePressedOver(coringa)){
+    goku();
+  }
   
 drawSprites();
 text("pontos da tua vida="+rocket,450,50);
 
+}
+
+function goku(){
+  
 }
 
 function gerador(){
@@ -117,7 +142,7 @@ if(frameCount%60===0){
 function strange(){
 if(frameCount%60===0){
   var doctor=createSprite(600,165,10,40);
-  doctor.velocityX=-6;
+  doctor.velocityX=-(6+rocket/100);
   var thanos=Math.round(random(1,6));
   switch (thanos) {
     case 1:doctor.addImage(stark);
