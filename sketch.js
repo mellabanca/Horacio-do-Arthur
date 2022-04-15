@@ -43,15 +43,15 @@ function preload(){
 }
 
 function setup(){
-createCanvas(600,200);
-  osmusquitotapicando = createSprite(200,180,400,20);
+createCanvas(windowWidth,windowHeight);
+  osmusquitotapicando = createSprite(width/2,height-80,width,125);
   osmusquitotapicando.addImage(verona);
   osmusquitotapicando.x = width/2;
-  horacio = createSprite(50,160,20,50);
+  horacio = createSprite(50,height-70,20,50);
   horacio.addAnimation("correndo", horacioImagem);
   horacio.addAnimation("bateuasbotas",batman);
   horacio.scale = 0.5;
-  backiardigans = createSprite(200,190,400,10);
+  backiardigans = createSprite(width/2,height-10,width,125);
   backiardigans.visible = false;
   borda = createEdgeSprites();
   rocket=0;
@@ -61,9 +61,9 @@ createCanvas(600,200);
   sextetosinistro = new Group();
   horacio.debug = false;
   horacio.setCollider("circle",0,0,35);
-  charada=createSprite(300,100);
+  charada=createSprite(width/2, height/2-50);
   charada.addImage(charadaimagen);
-  coringa=createSprite(300,140);
+  coringa=createSprite(width/2,height/2);
   coringa.addImage(coringaimagen);
   coringa.scale=0.7;
   
@@ -82,15 +82,16 @@ if(estado === avantevingadores){
   if(osmusquitotapicando.x<0){
     osmusquitotapicando.x = width/2;
   }
-  if(keyDown("space")&&horacio.y>=150){
+  if(keyDown("space")&&horacio.y>=height-120 || touches.length > 0 && horacio.y>=height-120){
     horacio.velocityY = -12;
     mario.play();
+    touches = [];
   }
 
   horacio.velocityY = horacio.velocityY + 1;
   gerador();
   strange();
-  rocket+=Math.round(frameCount/60);
+  rocket+=Math.round(frameRate()/60);
 if(sextetosinistro.isTouching(horacio)){
   estado=eusouinevitavel;
   bos.play();
@@ -112,27 +113,33 @@ if(rocket>0&&rocket%100===0){
   vingadores.setLifetimeEach(-1);
   sextetosinistro.setLifetimeEach(-1);
   horacio.velocityY=0;
+  if(mousePressedOver(coringa) || touches.length > 0){
+    goku();
+    touches = [];
+  }
 }
   horacio.collide(backiardigans);
 
-  if(mousePressedOver(coringa)){
-    goku();
-  }
   
 drawSprites();
-text("pontos da tua vida="+rocket,450,50);
+text("pontos da tua vida="+rocket,50,height/2-150);
 
 }
 
 function goku(){
-  
+  estado=avantevingadores;
+  vingadores.destroyEach();
+  sextetosinistro.destroyEach();
+  horacio.changeAnimation("correndo",horacioImagem);
+  rocket=0;
+
 }
 
 function gerador(){
 if(frameCount%60===0){
-  parker = createSprite(600,100,40,10);
+  parker = createSprite(width+20,height-300,40,10);
   parker.addImage(venom);
-  parker.y=Math.round(random(5,120));
+  parker.y=Math.round(random(5,height/2));
   parker.velocityX = -3;
   parker.depth = horacio.depth;
   horacio.depth+=1;
@@ -141,7 +148,7 @@ if(frameCount%60===0){
 }}
 function strange(){
 if(frameCount%60===0){
-  var doctor=createSprite(600,165,10,40);
+  var doctor=createSprite(width,height-95,10,40);
   doctor.velocityX=-(6+rocket/100);
   var thanos=Math.round(random(1,6));
   switch (thanos) {
